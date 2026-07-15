@@ -1,0 +1,15 @@
+# Dataset besar - unduh manual dari link di README, jangan di-push ke GitHub
+dataset_baru/*.csv
+
+# Python
+__pycache__/
+*.pyc
+venv/
+env/
+
+# Riwayat sesi lokal (jika ada)
+history.json
+
+# OS
+.DS_Store
+Thumbs.db

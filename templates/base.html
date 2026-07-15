@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}KaloriKu — Prediksi Kalori Terbakar{% endblock %}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+  // Terapkan tema tersimpan sebelum halaman render, biar tidak ada kedipan warna
+  (function () {
+    const tema = localStorage.getItem("kaloriku-theme") || "dark";
+    document.documentElement.setAttribute("data-theme", tema);
+  })();
+</script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="logo">
+        <span class="logo-mark">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M12 21C12 21 4 15.5 4 9.5C4 6.5 6.2 4.5 8.8 4.5C10.4 4.5 11.4 5.3 12 6.2C12.6 5.3 13.6 4.5 15.2 4.5C17.8 4.5 20 6.5 20 9.5C20 15.5 12 21 12 21Z" fill="var(--accent)"/>
+          </svg>
+        </span>
+        KaloriKu
+      </a>
+      <nav class="nav">
+        <a href="/" class="{{ 'active' if active == 'beranda' else '' }}">Beranda</a>
+        <a href="/prediksi" class="{{ 'active' if active == 'prediksi' else '' }}">Prediksi</a>
+        <a href="/rekomendasi" class="{{ 'active' if active == 'rekomendasi' else '' }}">Rekomendasi</a>
+        <a href="/tentang" class="{{ 'active' if active == 'tentang' else '' }}">Tentang</a>
+        <button type="button" id="themeToggle" class="theme-toggle" aria-label="Ganti tema">
+          <svg id="iconMoon" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+          <svg id="iconSun" width="18" height="18" viewBox="0 0 24 24" fill="none" class="hidden"><circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="2"/><path d="M12 2V5M12 19V22M4.2 4.2L6.3 6.3M17.7 17.7L19.8 19.8M2 12H5M19 12H22M4.2 19.8L6.3 17.7M17.7 6.3L19.8 4.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </nav>
+    </div>
+    <svg class="heartbeat-divider" viewBox="0 0 1200 24" preserveAspectRatio="none">
+      <polyline points="0,12 260,12 290,12 310,2 330,22 350,12 380,12 410,12 430,4 450,20 470,12 500,12 1200,12"
+        fill="none" stroke="url(#hbGrad)" stroke-width="2"/>
+      <defs>
+        <linearGradient id="hbGrad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="var(--accent)" stop-opacity="0"/>
+          <stop offset="20%" stop-color="var(--accent)" stop-opacity="0.9"/>
+          <stop offset="45%" stop-color="var(--accent-2)" stop-opacity="0.9"/>
+          <stop offset="100%" stop-color="var(--accent-2)" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  </header>
+
+  <main class="site-main">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <svg class="heartbeat-divider" viewBox="0 0 1200 24" preserveAspectRatio="none">
+      <polyline points="0,12 260,12 290,12 310,2 330,22 350,12 380,12 410,12 430,4 450,20 470,12 500,12 1200,12"
+        fill="none" stroke="url(#hbGrad2)" stroke-width="2"/>
+      <defs>
+        <linearGradient id="hbGrad2" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="var(--accent)" stop-opacity="0"/>
+          <stop offset="20%" stop-color="var(--accent)" stop-opacity="0.6"/>
+          <stop offset="45%" stop-color="var(--accent-2)" stop-opacity="0.6"/>
+          <stop offset="100%" stop-color="var(--accent-2)" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    <div class="footer-inner">
+      <div class="footer-col">
+        <p class="footer-logo">KaloriKu</p>
+        <p class="footer-text">Sistem prediksi kalori terbakar berbasis machine learning, dibangun untuk membantu kamu memahami tubuh sendiri lebih baik.</p>
+      </div>
+      <div class="footer-col">
+        <p class="footer-heading">Navigasi</p>
+        <a href="/">Beranda</a>
+        <a href="/prediksi">Prediksi</a>
+        <a href="/rekomendasi">Rekomendasi</a>
+        <a href="/tentang">Tentang</a>
+      </div>
+      <div class="footer-col">
+        <p class="footer-heading">Model</p>
+        <p class="footer-text">Neural Network (MLP) &middot; 750.000 data latih</p>
+      </div>
+    </div>
+    <p class="footer-copyright">&copy; 2026 KaloriKu. Dibuat untuk keperluan riset dan edukasi.</p>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById("themeToggle");
+    const iconMoon = document.getElementById("iconMoon");
+    const iconSun = document.getElementById("iconSun");
+
+    function updateIcon() {
+      const tema = document.documentElement.getAttribute("data-theme");
+      iconMoon.classList.toggle("hidden", tema === "light");
+      iconSun.classList.toggle("hidden", tema === "dark");
+    }
+    updateIcon();
+
+    themeToggle.addEventListener("click", () => {
+      const temaSekarang = document.documentElement.getAttribute("data-theme");
+      const temaBaru = temaSekarang === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", temaBaru);
+      localStorage.setItem("kaloriku-theme", temaBaru);
+      updateIcon();
+    });
+  </script>
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>

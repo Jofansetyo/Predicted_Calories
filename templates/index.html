@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}Beranda — KaloriKu{% endblock %}
+{% block content %}
+
+<section class="hero">
+  <div class="hero-text">
+    <p class="eyebrow">Prediksi bertenaga machine learning</p>
+    <h1>Setiap gerakan<br>punya angkanya sendiri.</h1>
+    <p class="hero-desc">KaloriKu membaca biodata dan aktivitas fisik kamu, lalu memprediksi kalori yang terbakar secara instan — dilatih dari 750.000 data latihan nyata.</p>
+    <div class="hero-actions">
+      <a href="/prediksi" class="cta-btn">Mulai Prediksi</a>
+      <a href="/tentang" class="cta-btn-ghost">Lihat cara kerja</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <p class="hero-stat-value">750K+</p>
+        <p class="hero-stat-label">Data latih</p>
+      </div>
+      <div>
+        <p class="hero-stat-value">2.19</p>
+        <p class="hero-stat-label">MAE (kkal)</p>
+      </div>
+      <div>
+        <p class="hero-stat-value">7</p>
+        <p class="hero-stat-label">Variabel input</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-art">
+    <svg viewBox="0 0 400 420" class="runner-svg">
+      <defs>
+        <linearGradient id="flameGrad" x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0%" stop-color="var(--accent)"/>
+          <stop offset="100%" stop-color="#FFB199"/>
+        </linearGradient>
+      </defs>
+      <!-- lingkaran latar -->
+      <circle cx="200" cy="210" r="170" fill="var(--surface-2)"/>
+      <circle cx="200" cy="210" r="170" fill="none" stroke="var(--border)" stroke-width="1"/>
+
+      <!-- garis heartbeat melintang -->
+      <polyline points="40,300 120,300 140,300 155,260 172,340 188,300 210,300 230,300 248,270 264,330 280,300 360,300"
+        fill="none" stroke="var(--accent-2)" stroke-width="2.5" opacity="0.55"/>
+
+      <!-- figur pelari abstrak (bentuk geometris) -->
+      <g transform="translate(140,90)">
+        <circle cx="60" cy="18" r="16" fill="var(--text)"/>
+        <path d="M60 34 L52 90 L20 130" stroke="var(--text)" stroke-width="10" stroke-linecap="round" fill="none"/>
+        <path d="M60 34 L78 90 L104 74" stroke="var(--text)" stroke-width="10" stroke-linecap="round" fill="none"/>
+        <path d="M52 90 L86 150" stroke="var(--text)" stroke-width="10" stroke-linecap="round" fill="none"/>
+        <path d="M52 90 L18 158" stroke="var(--text)" stroke-width="10" stroke-linecap="round" fill="none"/>
+      </g>
+
+      <!-- api kalori -->
+      <path d="M290 250 C300 230 285 220 288 205 C296 218 312 222 310 245 C309 258 298 265 288 262 C280 260 282 250 290 250 Z"
+        fill="url(#flameGrad)"/>
+    </svg>
+  </div>
+</section>
+
+<section class="how-it-works">
+  <p class="section-eyebrow">Cara kerja</p>
+  <h2 class="section-title">Tiga langkah menuju angka pastinya</h2>
+
+  <div class="steps-grid">
+    <div class="step-card">
+      <span class="step-number">01</span>
+      <h3>Isi biodata</h3>
+      <p>Jenis kelamin, usia, tinggi, dan berat badan — dasar perhitungan metabolisme kamu.</p>
+    </div>
+    <div class="step-card">
+      <span class="step-number">02</span>
+      <h3>Isi data aktivitas</h3>
+      <p>Durasi olahraga, detak jantung, dan suhu tubuh saat beraktivitas.</p>
+    </div>
+    <div class="step-card">
+      <span class="step-number">03</span>
+      <h3>Terima hasilnya</h3>
+      <p>Model Neural Network menghitung estimasi kalori beserta status BMI dan saran kesehatan.</p>
+    </div>
+  </div>
+</section>
+
+<section class="feature-section">
+  <p class="section-eyebrow">Kenapa KaloriKu</p>
+  <h2 class="section-title">Bukan sekadar kalkulator kalori</h2>
+
+  <div class="feature-grid">
+    <div class="feature-box">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M3 17L9 11L13 15L21 7" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 7H21V13" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <h3>Akurasi teruji</h3>
+      <p>Dievaluasi dengan MAE dan RMSE pada 150.000 data uji terpisah dari data latih.</p>
+    </div>
+    <div class="feature-box">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 21C12 21 4 15.5 4 9.5C4 6.5 6.2 4.5 8.8 4.5C10.4 4.5 11.4 5.3 12 6.2C12.6 5.3 13.6 4.5 15.2 4.5C17.8 4.5 20 6.5 20 9.5C20 15.5 12 21 12 21Z" stroke="var(--accent-2)" stroke-width="2" stroke-linejoin="round"/></svg>
+      <h3>Rekomendasi status gizi</h3>
+      <p>Setiap hasil dilengkapi kategori BMI dan saran kesehatan yang relevan.</p>
+    </div>
+    <div class="feature-box">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/></svg>
+      <h3>Rekomendasi olahraga</h3>
+      <p>Punya target kalori? Sistem sarankan jenis dan durasi olahraga yang cocok.</p>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

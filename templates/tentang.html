@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}Tentang — KaloriKu{% endblock %}
+{% block content %}
+
+<div class="about-wrapper">
+  <p class="eyebrow">Di balik layar</p>
+  <h1 class="section-title">Bagaimana KaloriKu menghitung</h1>
+  <p class="about-desc">Sistem ini dibangun di atas model machine learning yang dilatih dengan ratusan ribu data aktivitas fisik nyata, bukan rumus generik.</p>
+
+  <div class="pipeline">
+    <div class="pipeline-step">
+      <div class="pipeline-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" rx="2" stroke="var(--accent)" stroke-width="2"/><path d="M3 9H21" stroke="var(--accent)" stroke-width="2"/></svg>
+      </div>
+      <p class="pipeline-label">Dataset</p>
+      <p class="pipeline-text">750.000 baris data dari Kaggle Playground Series S5E5</p>
+    </div>
+    <svg class="pipeline-arrow" width="32" height="16" viewBox="0 0 32 16"><path d="M0 8H28M28 8L21 1M28 8L21 15" stroke="var(--border)" stroke-width="2" fill="none"/></svg>
+    <div class="pipeline-step">
+      <div class="pipeline-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 20L4 14M4 14L4 4M4 14H10M10 14V20M10 14V4M10 14H16M16 14V8M16 8V20M16 8H20V20" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/></svg>
+      </div>
+      <p class="pipeline-label">Preprocessing</p>
+      <p class="pipeline-text">Encoding gender, split data latih 80% dan uji 20%</p>
+    </div>
+    <svg class="pipeline-arrow" width="32" height="16" viewBox="0 0 32 16"><path d="M0 8H28M28 8L21 1M28 8L21 15" stroke="var(--border)" stroke-width="2" fill="none"/></svg>
+    <div class="pipeline-step">
+      <div class="pipeline-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="6" cy="6" r="2.5" stroke="var(--accent)" stroke-width="2"/><circle cx="6" cy="18" r="2.5" stroke="var(--accent)" stroke-width="2"/><circle cx="18" cy="12" r="2.5" stroke="var(--accent)" stroke-width="2"/><path d="M8.2 7.2L15.8 10.8M8.2 16.8L15.8 13.2" stroke="var(--accent)" stroke-width="2"/></svg>
+      </div>
+      <p class="pipeline-label">Neural Network</p>
+      <p class="pipeline-text">2 hidden layer (64, 32 neuron), aktivasi ReLU</p>
+    </div>
+    <svg class="pipeline-arrow" width="32" height="16" viewBox="0 0 32 16"><path d="M0 8H28M28 8L21 1M28 8L21 15" stroke="var(--border)" stroke-width="2" fill="none"/></svg>
+    <div class="pipeline-step">
+      <div class="pipeline-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 21C12 21 4 15.5 4 9.5C4 6.5 6.2 4.5 8.8 4.5C10.4 4.5 11.4 5.3 12 6.2C12.6 5.3 13.6 4.5 15.2 4.5C17.8 4.5 20 6.5 20 9.5C20 15.5 12 21 12 21Z" stroke="var(--accent-2)" stroke-width="2" stroke-linejoin="round"/></svg>
+      </div>
+      <p class="pipeline-label">Hasil</p>
+      <p class="pipeline-text">Estimasi kalori, kategori BMI, dan saran kesehatan</p>
+    </div>
+  </div>
+
+  <div class="metrics-section">
+    <p class="section-eyebrow">Performa model</p>
+    <h2 class="section-title">Diukur, bukan diasumsikan</h2>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <p class="metric-value">2.19</p>
+        <p class="metric-label">Mean Absolute Error (kkal)</p>
+      </div>
+      <div class="metric-card">
+        <p class="metric-value">3.64</p>
+        <p class="metric-label">RMSE (kkal)</p>
+      </div>
+      <div class="metric-card">
+        <p class="metric-value">7</p>
+        <p class="metric-label">Fitur input yang digunakan</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="feature-list-section">
+    <p class="section-eyebrow">Variabel input</p>
+    <h2 class="section-title">Tujuh angka yang menentukan hasil</h2>
+    <div class="input-list">
+      <div class="input-item"><span>Jenis kelamin</span><span class="input-tag">Biodata</span></div>
+      <div class="input-item"><span>Usia</span><span class="input-tag">Biodata</span></div>
+      <div class="input-item"><span>Tinggi badan</span><span class="input-tag">Biodata</span></div>
+      <div class="input-item"><span>Berat badan</span><span class="input-tag">Biodata</span></div>
+      <div class="input-item"><span>Durasi olahraga</span><span class="input-tag input-tag-alt">Aktivitas</span></div>
+      <div class="input-item"><span>Detak jantung</span><span class="input-tag input-tag-alt">Aktivitas</span></div>
+      <div class="input-item"><span>Suhu tubuh</span><span class="input-tag input-tag-alt">Aktivitas</span></div>
+    </div>
+  </div>
+
+  <div class="about-cta">
+    <h2>Siap tahu angka kamu?</h2>
+    <a href="/prediksi" class="cta-btn">Mulai Prediksi</a>
+  </div>
+</div>
+
+{% endblock %}

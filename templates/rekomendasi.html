@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Rekomendasi Olahraga — KaloriKu{% endblock %}
+{% block content %}
+
+<div class="predict-wrapper">
+  <div class="predict-intro">
+    <p class="eyebrow">Target kalori</p>
+    <h1 class="predict-title">Rekomendasi Olahraga</h1>
+    <p class="predict-desc">Masukkan target kalori yang ingin kamu bakar, sistem akan menyarankan jenis olahraga dan estimasi durasinya.</p>
+
+    <svg class="predict-art" viewBox="0 0 240 240">
+      <circle cx="120" cy="120" r="100" fill="none" stroke="var(--border)" stroke-width="1.5" stroke-dasharray="4 6"/>
+      <circle cx="120" cy="120" r="70" fill="var(--surface-2)"/>
+      <path d="M120 75L131 108H166L138 128L149 161L120 141L91 161L102 128L74 108H109Z" fill="var(--accent)" opacity="0.85"/>
+    </svg>
+  </div>
+
+  <div class="card">
+    <form id="rekomendasiForm">
+      <div class="field">
+        <label>Target kalori yang ingin dibakar (kkal)</label>
+        <input type="number" id="target_kalori" placeholder="300" required>
+      </div>
+      <button type="submit">Cari Rekomendasi</button>
+    </form>
+
+    <div id="rekomendasiResult" class="rekomendasi-list hidden"></div>
+  </div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+<script>
+document.getElementById("rekomendasiForm").addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  const targetKalori = document.getElementById("target_kalori").value;
+
+  const res = await fetch("/rekomendasi-olahraga", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ target_kalori: targetKalori }),
+  });
+  const data = await res.json();
+
+  const container = document.getElementById("rekomendasiResult");
+  container.innerHTML = "";
+
+  const warnaIntensitas = {
+    "Ringan": "intensitas-ringan",
+    "Sedang": "intensitas-sedang",
+    "Berat": "intensitas-berat",
+  };
+
+  data.rekomendasi.forEach((item) => {
+    const row = document.createElement("div");
+    row.className = "rekomendasi-item";
+    row.innerHTML = `
+      <div>
+        <p class="rekomendasi-nama">${item.nama}</p>
+        <span class="rekomendasi-tag ${warnaIntensitas[item.intensitas]}">${item.intensitas}</span>
+      </div>
+      <p class="rekomendasi-durasi">${item.durasi_menit} <span>menit</span></p>
+    `;
+    container.appendChild(row);
+  });
+
+  container.classList.remove("hidden");
+});
+</script>
+{% endblock %}
