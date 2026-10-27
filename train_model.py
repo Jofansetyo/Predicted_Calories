@@ -24,9 +24,10 @@ data = exercise.merge(calories, on="User_ID")
 
 # 2. Ubah kolom Gender jadi angka (0 = female, 1 = male)
 data["Gender"] = data["Gender"].map({"male": 1, "female": 0})
+data = data.rename(columns={"Gender": "Sex"})
 
 # 3. Pilih fitur (input) dan target (output)
-fitur = ["Gender", "Age", "Height", "Weight", "Duration", "Heart_Rate", "Body_Temp"]
+fitur = ["Sex", "Age", "Height", "Weight", "Duration", "Heart_Rate", "Body_Temp"]
 X = data[fitur]
 y = data["Calories"]
 

@@ -67,23 +67,17 @@ luar Python — murni native Flask + HTML/CSS/JS.
 
 ---
 
-## 5. Kekurangan Proyek (Bug / Warning yang Diketahui)
+## 5. Batasan Proyek
 
-- **Warning scikit-learn saat prediksi**: muncul `UserWarning: X does not have
-  valid feature names, but StandardScaler was fitted with feature names`. Ini
-  terjadi karena input prediksi dikirim sebagai NumPy array tanpa nama kolom,
-  sedangkan model dilatih menggunakan DataFrame pandas. Warning ini tidak
-  memengaruhi hasil prediksi, namun idealnya diperbaiki dengan mengonversi
-  input menjadi DataFrame sebelum prediksi.
 - **Tidak ada sistem autentikasi/login** — aplikasi ini tidak menyimpan riwayat
   prediksi per pengguna. Setiap prediksi bersifat sesi-tunggal (tidak
   persisten setelah halaman ditutup).
 - **Model belum divalidasi lintas populasi Indonesia** — dataset training
   berasal dari data internasional (Kaggle), sehingga akurasi untuk karakteristik
   fisik populasi Indonesia belum diuji secara khusus.
-- **Belum ada validasi input yang ketat** di sisi backend (misalnya usia negatif
-  atau nilai ekstrem lain belum ditolak secara eksplisit selain validasi HTML
-  `required` di sisi klien).
+- **Validasi input membatasi nilai ke angka positif**, tetapi belum membatasi
+  rentang fisiologis yang wajar. Input di luar rentang data training dapat
+  menghasilkan estimasi yang tidak andal.
 - **Model disimpan sebagai file `.pkl`** yang bergantung pada versi scikit-learn
   saat training; model kemungkinan gagal dimuat jika dijalankan dengan versi
   scikit-learn yang jauh berbeda dari saat training.
@@ -199,21 +193,40 @@ kalori-prediksi/
 
 ## Cara Menjalankan
 
+### Windows (PowerShell)
+
+Buka terminal di folder proyek, lalu jalankan:
+
 ```bash
-# 1. Install dependency
-pip install -r requirements.txt
-
-# 2. Jalankan aplikasi
-python app.py
-
-# 3. Buka di browser
-http://127.0.0.1:5000
+.\venv\Scripts\python.exe -m pip install -r requirements.txt
+.\venv\Scripts\python.exe app.py
 ```
 
-Model yang digunakan aplikasi (`model/calorie_model.pkl`) sudah dilatih
-sebelumnya dan siap pakai — tidak perlu training ulang untuk menjalankan
-aplikasi. Untuk melihat proses training dari awal, buka
-`notebook/Training_Model_Kalori.ipynb` di Google Colab atau Jupyter.
+Jika folder `venv` belum ada, buat virtual environment terlebih dahulu:
+
+```bash
+py -3 -m venv venv
+.\venv\Scripts\python.exe -m pip install -r requirements.txt
+.\venv\Scripts\python.exe app.py
+```
+
+Buka `http://127.0.0.1:5000` di browser. Model terlatih sudah disediakan di
+`model/calorie_model.pkl`, jadi training tidak diperlukan untuk mencoba aplikasi.
+Di VS Code, pilih konfigurasi **Python: Flask** pada panel Run and Debug lalu
+tekan **F5**.
+
+### macOS / Linux
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+python -m pip install -r requirements.txt
+python app.py
+```
+
+Untuk melatih ulang model, pastikan `dataset_baru/train.csv` tersedia, lalu
+jalankan `python train_model_v3.py`. Proses ini melatih ulang model dan
+menimpa `model/calorie_model.pkl`.
 
 ---
 

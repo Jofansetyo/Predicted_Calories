@@ -1,15 +1,36 @@
 from flask import Flask, request, jsonify, render_template
 import joblib
-import numpy as np
+import math
 import os
+import pandas as pd
 
 app = Flask(__name__)
 
 # Load model sekali saat server nyala
-MODEL_PATH = "model/calorie_model.pkl"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, "model", "calorie_model.pkl")
 model = None
 if os.path.exists(MODEL_PATH):
     model = joblib.load(MODEL_PATH)
+
+FITUR_MODEL = ["Sex", "Age", "Height", "Weight", "Duration", "Heart_Rate", "Body_Temp"]
+
+
+def parse_angka(data, fields):
+    if not isinstance(data, dict):
+        return None, "Body request harus berupa JSON object."
+
+    try:
+        values = {field: float(data[field]) for field in fields}
+    except (KeyError, TypeError, ValueError):
+        return None, "Semua input wajib diisi dengan angka yang valid."
+
+    if not all(math.isfinite(value) for value in values.values()):
+        return None, "Input harus berupa angka yang valid."
+    if any(value <= 0 for value in values.values()):
+        return None, "Semua nilai harus lebih besar dari 0."
+
+    return values, None
 
 
 def hitung_bmi(berat, tinggi_cm):
@@ -70,22 +91,37 @@ def rekomendasi():
 @app.route("/predict", methods=["POST"])
 def predict():
     if model is None:
-        return jsonify({"error": "Model belum ditraining. Jalankan train_model.py dulu."}), 400
+        return jsonify({"error": "File model tidak ditemukan. Jalankan train_model_v3.py untuk membuat model."}), 503
 
-    data = request.get_json()
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict):
+        return jsonify({"error": "Body request harus berupa JSON object."}), 400
 
-    gender = 1 if data.get("gender") == "male" else 0
-    age = float(data.get("age"))
-    height = float(data.get("height"))
-    weight = float(data.get("weight"))
-    duration = float(data.get("duration"))
-    heart_rate = float(data.get("heart_rate"))
-    body_temp = float(data.get("body_temp"))
+    gender = data.get("gender")
+    if gender not in ("male", "female"):
+        return jsonify({"error": "Jenis kelamin harus male atau female."}), 400
 
-    fitur = np.array([[gender, age, height, weight, duration, heart_rate, body_temp]])
+    values, error = parse_angka(
+        data, ["age", "height", "weight", "duration", "heart_rate", "body_temp"]
+    )
+    if error:
+        return jsonify({"error": error}), 400
+
+    fitur = pd.DataFrame(
+        [[
+            1 if gender == "male" else 0,
+            values["age"],
+            values["height"],
+            values["weight"],
+            values["duration"],
+            values["heart_rate"],
+            values["body_temp"],
+        ]],
+        columns=FITUR_MODEL,
+    )
     hasil = round(float(model.predict(fitur)[0]), 1)
 
-    bmi = hitung_bmi(weight, height)
+    bmi = hitung_bmi(values["weight"], values["height"])
     label_bmi, saran = kategori_bmi(bmi)
 
     return jsonify({
@@ -98,12 +134,16 @@ def predict():
 
 @app.route("/rekomendasi-olahraga", methods=["POST"])
 def rekomendasi_olahraga():
-    data = request.get_json()
-    target_kalori = float(data.get("target_kalori"))
+    data = request.get_json(silent=True)
+    values, error = parse_angka(data, ["target_kalori"])
+    if error:
+        return jsonify({"error": error}), 400
+
+    target_kalori = values["target_kalori"]
 
     hasil = []
     for olahraga in DAFTAR_OLAHRAGA:
-        durasi_menit = round(target_kalori / olahraga["kalori_per_menit"])
+        durasi_menit = max(1, round(target_kalori / olahraga["kalori_per_menit"]))
         hasil.append({
             "nama": olahraga["nama"],
             "intensitas": olahraga["intensitas"],
